@@ -1,0 +1,194 @@
+﻿@model ML.Empresa
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="text-center">
+    <h2>Empresas</h2>
+    <h5>Lista de empresas registradas</h5>
+</div>
+<br />
+
+
+
+
+
+<div class="containerTable" id="containerTable">
+
+
+    <div class="row">
+        <div class="col col-md-6">
+            @Html.ActionLink("Agregar", "Form", "Empresa", new { @class = "btn btn-success" })
+        </div>
+
+    </div>
+    <br />
+
+    @if (Model.Empresas != null)
+    {
+
+        <div class="row text-center">
+            <div class="col-md-12">
+
+                <table class="table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Editar</th>
+                            <th class="visually-hidden">IdEmpresa</th>
+                            <th>Telefono</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>DireccionWeb</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (ML.Empresa empresa in Model.Empresas)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <a class="btn btn-warning" href="@Url.Action("Form", "Empresa", new {IdEmpresa = empresa.IdEmpresa})"><i class="fa-solid fa-pencil"></i></a>
+                                </td>
+
+                                <td class="visually-hidden">@empresa.IdEmpresa</td>
+                                <td>@empresa.Nombre </td>
+                                <td>@empresa.Telefono</td>
+                                <td>@empresa.Email</td>
+                                <td>@empresa.DireccionWeb</td>
+
+
+                                <td>
+                                   
+                                    <a class="btn btn-danger delete" data-idEmpresa="@empresa.IdEmpresa" data-nombreEmpresa="@empresa.Nombre" onclick="DeleteEmpresa(event)">Eliminar</a>
+
+                                </td>
+
+
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            No se encontraron registros
+        </div>
+
+    }
+
+</div>
+
+
+
+
+
+
+
+
+
+<link href="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.9.0/dist/sweetalert2.min.css
+" rel="stylesheet">
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+@section scripts{
+
+
+    <script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.9.0/dist/sweetalert2.all.min.js
+"></script>
+
+
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(function () {
+            $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        });
+    </script>
+
+
+}
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+    function DeleteEmpresa(event) {
+        event.preventDefault();
+
+        ;
+        let NombreEmpresa = event.target.getAttribute("data-nombreEmpresa");
+
+        let IdEmpresa = event.target.getAttribute("data-IdEmpresa");
+
+
+        Swal.fire({
+            title: "Eliminar?",
+            text: `Desea eliminar la empresa ${NombreEmpresa}`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, eliminar ahora!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeleteEmpresa")',
+                    dataType: 'json',
+                    data: { IdEmpresa },
+                    success: function () {
+                        Swal.fire({
+                            title: "Empresa eliminada!",
+                            text: `La empresa ${NombreEmpresa} fue eliminada correctamente`,
+                            icon: "success"
+                        });
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1800)
+                    },
+                    error: function (ex) {
+                        alert('Failed.' + ex);
+                    }
+                });
+
+
+
+            }
+        });
+
+
+
+
+    }
+</script>
+
+
+
+

@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "CargaMasiva";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CargaMasiva</h2>
+
+
+@using (@Html.BeginForm("CargaMasiva", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <input type="file" name="cargaMasiva" value="Subir un archivo">
+    <br>
+    <input type="submit" value="Cargar" class="btm btn-warning">
+
+
+}
+

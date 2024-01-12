@@ -1,0 +1,244 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h2>Usuarios</h2>
+    <h5>Lista de usuarios registrados</h5>
+</div>
+<br />
+
+<div class="row">
+    <div class="col col-md-6">
+        @Html.ActionLink("Agregar", "Form", "Usuario", new { @class = "btn btn-success" })
+    </div>
+    <div class="col col-md-6">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="btnOpenSearchAdvanced">
+            Busqueda avanzada
+        </button>
+    </div>
+</div>
+<br />
+
+@*<div class="container">
+        <div class="row">
+            @using (@Html.BeginForm("GetAll", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+
+                <div class="col col-md-3">
+                    @Html.LabelFor(model => model.Nombre)
+                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+                </div>
+                <div class="col col-md-3">
+                    @Html.LabelFor(model => model.ApellidoPaterno)
+                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+                </div>
+                <div class="col col-md-3">
+                    @Html.LabelFor(model => model.ApellidoMaterno)
+                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control" })
+                </div>
+                <div class="col col-md-3">
+                    <input type="submit" class="btn btn-success" value="@ViewBag.Accion" />
+                </div>
+
+            }
+        </div>
+    </div>*@
+
+<br />
+
+
+@if (Model.Usuarios != null)
+{
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Editar</th>
+                            <th class="visually-hidden">IdUsuario</th>
+                            <th>UserName</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th class="visually-hidden">Password</th>
+                            <th>Sexo</th>
+                            <th>Telefono</th>
+                            <th>Celular</th>
+                            <th>CURP</th>
+                            <th>Estatus</th>
+                            <th>FechaNacimiento</th>
+                            <th class="visually-hidden">Id rol</th>
+                            <th>Rol</th>
+                            <th>Foto</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+
+                    @foreach (ML.Usuario usuario in Model.Usuarios)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <a class="btn btn-warning" href="@Url.Action("Form", "Usuario", new {IdUsuario = usuario.IdUsuario})"><i class="fa-solid fa-pencil"></i></a>
+                            </td>
+                            <td class="visually-hidden">@usuario.IdUsuario</td>
+                            <td>@usuario.UserName</td>
+                            <td>@usuario.Nombre @usuario.ApellidoPaterno @usuario.ApellidoMaterno </td>
+                            <td>@usuario.Email</td>
+                            <td class="visually-hidden">@usuario.Pasword</td>
+                            <td>@usuario.Sexo</td>
+                            <td>@usuario.Telefono</td>
+                            <td>@usuario.Celular</td>
+                            <td>@usuario.CURP</td>
+
+                            @if (usuario.Estatus)
+                            {
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked onchange="ChangeStatus(@usuario.IdUsuario, this)">
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onchange="ChangeStatus(@usuario.IdUsuario, this);">
+                                    </div>
+                                </td>
+                            }
+
+                            <td>@usuario.FechaNacimiento</td>
+                            <td class="visually-hidden">@usuario.Rol.IdRol</td>
+                            <td>@usuario.Rol.RolName</td>
+                            <td>
+                                @if (usuario.Imagen == null)
+                                {
+                                    <img src="~/Images/DefaultImag.png" id="imgUsuario" style="width: 100px; height:100px;" />
+                                }
+                                else
+                                {
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(usuario.Imagen)" id="imgUsuario" style="width: 100px; height:100px;" />
+                                }
+                            </td>
+                            <td>
+                                <a class="btn btn-danger delete" onclick="confirmacionDelete(event, @usuario.IdUsuario)" href="@Url.Action("Delete", "Usuario", new {IdUsuario = usuario.IdUsuario})">Eliminar</a>
+                            </td>
+                        </tr>
+                    }
+
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        No se encontraron registros
+    </div>
+
+}
+
+
+
+
+
+@* MODAL BUSQUEDA AVANZADA *@
+
+<div class="modal fade" id="SearchAdvanced" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @using (@Html.BeginForm("GetAll", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+                    <div class="col col-xl-12">
+                        @Html.LabelFor(model => model.Nombre)
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                    </div>
+                    <div class="col col-xl-12">
+                        @Html.LabelFor(model => model.ApellidoPaterno)
+                        @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @id = "txtApellidoPaterno" })
+                    </div>
+                    <div class="col col-xl-12">
+                        @Html.LabelFor(model => model.ApellidoMaterno)
+                        @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", @id = "txtApellidoMaterno" })
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.Rol.IdRol)
+                            @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "RolName"), "Selecciona una opcion", new { @class = "form-control", @id = "ddlRol" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-success" value="@ViewBag.Accion" />
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+
+
+<script type="text/javascript">
+
+    $("#btnOpenSearchAdvanced").click(function () {
+
+        $("#SearchAdvanced").modal('show');
+
+        $("#txtNombre").val('');
+        $("#txtApellidoPaterno").val('');
+        $("#txtApellidoMaterno").val('');
+        $("#ddlRol").val('');
+    });
+
+
+
+
+    function ChangeStatus(idUsuario,e){
+        var status = e.checked
+         $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CambiarStatus")',
+                dataType: 'json',
+             data: { idUsuario, status},
+                success: {               },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+    }
+
+
+</script>
+
+
+<script type="text/javascript">
+    function confirmacionDelete(event, idUsuario) {
+
+        event.preventDefault();
+
+        if (confirm(`Deseas eliminar el Usuario ${idUsuario}`) == true) {
+            alert("vas a eliminar")
+        }
+
+    }
+
+</script>

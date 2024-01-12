@@ -1,0 +1,78 @@
+﻿@model ML.Empresa
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h2>Empresa</h2>
+
+<div class="row">
+    <div class="col">
+        <h2>@ViewBag.Accion</h2>
+        <p>Ingrese los datos de la empresa</p>
+    </div>
+</div>
+
+
+<div class="container">
+
+    @using (@Html.BeginForm("Form", "Empresa", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col col-md-12">
+                @Html.LabelFor(model => model.IdEmpresa, new { @class = "visually-hidden" })
+                @Html.TextBoxFor(model => model.IdEmpresa, new { @class = "form-control visually-hidden" })
+            </div>
+        </div>
+
+
+
+        <div class="row align-items-start">
+            <div class="col col-md-12">
+                @Html.LabelFor(model => model.Nombre)
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @onkeypress = "return Validar(event)", autocomplete = "off" })
+                @Html.ValidationMessageFor(model => model.Nombre)
+                <label id="lblNombreMsg"></label>
+            </div>
+        </div>
+
+        <div class="row align-items-start">
+            <div class="col col-md-12">
+                @Html.LabelFor(model => model.Telefono)
+                @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row align-items-start">
+            <div class="col col-md-12">
+                @Html.LabelFor(model => model.Email)
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", autocomplete = "off", @id = "txtEmail" })
+                @Html.ValidationMessageFor(model => model.Email)
+                <label id="lblEmailMsg"></label>
+            </div>
+        </div>
+
+        <div class="row align-items-start">
+            <div class="col col-md-12">
+                @Html.LabelFor(model => model.DireccionWeb)
+                @Html.TextBoxFor(model => model.DireccionWeb, new { @class = "form-control", autocomplete = "off", @id = "txtEmail" })
+                @Html.ValidationMessageFor(model => model.Email)
+                <label id="lblEmailMsg"></label>
+            </div>
+        </div>
+
+
+        <input type="submit" class="btn btn-success" value="@ViewBag.Accion" />
+        @Html.ActionLink("Cancelar", "Getall", "Empresa", new { @class = "btn btn-danger" })
+
+
+    }
+</div>
+
+
+
+
+
+

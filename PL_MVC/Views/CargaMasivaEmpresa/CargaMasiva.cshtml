@@ -1,0 +1,136 @@
+﻿@model ML.Empresa
+@{
+    ViewBag.Title = "CargaMasivaExcel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Carga Masiva</h2>
+
+<div class="row">
+    <div class="col">
+        <p>Por favor suba un archivo para ingresar los datos en la base</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <a><input type="submit" value="Excel" class="btn btn-success col-md-12" id="xlsx" /></a>
+    </div>
+    <div class="col-md-6">
+        <a><input type="submit" value="TXT" class="btn btn-primary col-md-12" id="txt" /></a>
+    </div>
+</div>
+
+
+@using (@Html.BeginForm("CargaMasiva", "CargaMasivaEmpresa", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+
+    <div class="row g-3" id="fuExcel" style="display:none;">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon1"><i class="bi bi-file-earmark-text-fill" style="color: lightseagreen"></i></span>
+                <input type='file' class="form-control" name="excel" />
+            </div>
+        </div>
+
+
+        @if (Model.IsValidExcel == false)
+        {
+
+
+            <div class="row g-3">
+                <div class="col-md-1">
+                    <a><input type="submit" value="Previsualizar" class="btn btn-success" /></a>
+                    <br />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row g-3">
+                <div class="col-md-1">
+                    <a><input type="submit" value="Insertar" class="btn btn-success" /></a>
+                    <br />
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-1">
+                    <a><input type="submit" value="Validar" class="btn btn-success" /></a>
+                    <br />
+                </div>
+            </div>
+        }
+    </div>
+    <br />
+
+
+
+    <br>
+    <input type="submit" value="Cargar">
+
+
+
+}
+
+
+@if (Model.Empresas != null)
+{
+    <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <table class="table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre de la empresa</th>
+                            <th>Telefono</th>
+                            <th>Email</th>
+                            <th>Direccion Web</th>
+                            <th>Errores</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ML.Empresa empresa in Model.Empresas)
+                        {
+                            <tr>
+                                <td>@empresa.Nombre</td>
+                                <td>@empresa.Telefono</td>
+                                <td>@empresa.Email</td>
+                                <td>@empresa.DireccionWeb</td>
+                                <td>@empresa.ErrorMessage</td>
+                            </tr>
+
+                        }
+
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="row text-center">
+        <div class="col">
+        </div>
+    </div>
+}
+
+
+
+<script type="text/javascript">
+
+
+    $('#xlsx').click(function () {
+        $('#fuExcel').toggle('slow', function () {
+        });
+    });
+
+
+</script>
+

@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "CargaMasivaExcel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Carga Masiva Excel</h2>
+
+
+
+
+@using (@Html.BeginForm("CargaMasivaExcel", "CargaMasivaUsuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <input type="file" name="cargaMasivaExcel" value="Subir un archivo">
+    <br>
+    <input type="submit" value="Cargar" class="btm btn-">
+
+
+}
+

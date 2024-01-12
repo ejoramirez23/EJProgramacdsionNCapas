@@ -1,0 +1,634 @@
+﻿@model ML.Usuario
+
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Usuarios</h2>
+
+<div class="row">
+    <div class="col">
+        <h2>@ViewBag.Accion</h2>
+        <p>Ingrese los datos de usuario</p>
+    </div>
+</div>
+
+
+<div class="container">
+
+    @using (@Html.BeginForm("Form", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col">
+                @Html.LabelFor(model => model.IdUsuario, new { @class = "visually-hidden" })
+                @Html.TextBoxFor(model => model.IdUsuario, new { @class = "form-control visually-hidden" })
+            </div>
+        </div>
+
+
+
+        <div class="row align-items-start">
+            <div class="row">
+
+
+
+
+
+                <div class="col">
+
+                    <div class="row">
+
+                        <fieldset>
+                            <legend>Datos personales</legend>
+
+                            @Html.LabelFor(model => model.Nombre)
+                            @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @onkeypress = "return Validar(event)", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.Nombre)
+                            <label id="lblNombreMsg"></label>
+
+                            <br>
+
+
+                            @Html.LabelFor(model => model.ApellidoPaterno)
+                            @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @onkeypress = "Validar(event)", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.ApellidoPaterno)
+                            <label id="lblAPaternoMsg"></label>
+
+
+                            <br>
+
+
+                            @Html.LabelFor(model => model.ApellidoMaterno)
+                            @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", @onkeypress = "Validar(event)", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.ApellidoMaterno)
+                            <label id="lblAMaternoMsg"></label>
+
+
+
+
+                            <br>
+
+                            @if (Model.Sexo == "H")
+                            {
+                            <Label>@Html.RadioButtonFor(model => model.Sexo, "H", new { @class = "", @id = "rbtnSexoM", @checked = true })Masculino</Label>
+                            <Label>@Html.RadioButtonFor(model => model.Sexo, "M", new { @class = "", @id = "rbtnSexoF" })Femenino</Label>
+                            }else{
+                            <Label>@Html.RadioButtonFor(model => model.Sexo, "H", new { @class = "", @id = "rbtnSexoM"})Masculino</Label>
+                            <Label>@Html.RadioButtonFor(model => model.Sexo, "M", new { @class = "", @id = "rbtnSexoF", @checked = true })Femenino</Label>
+                            }
+
+
+                            <br>
+
+
+                            @Html.LabelFor(model => model.CURP)
+                            @Html.TextBoxFor(model => model.CURP, new { @class = "form-control" })
+
+                            <br>
+
+                            @Html.LabelFor(model => model.FechaNacimiento)
+                            @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control", @id = "datepicker", @type = "text" })
+
+
+                        </fieldset>
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+                        <fieldset>
+                            <legend>Contacto</legend>
+
+                            @Html.LabelFor(model => model.Telefono)
+                            @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control" })
+
+                            <br>
+
+                            @Html.LabelFor(model => model.Celular)
+                            @Html.TextBoxFor(model => model.Celular, new { @class = "form-control" })
+
+                            <br>
+
+                        </fieldset>
+                    </div>
+
+                </div>
+
+
+                <div class="col">
+
+                    <fieldset>
+                        <legend>Cuenta</legend>
+
+                        @Html.LabelFor(model => model.UserName)
+                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @onkeypress = "return Validar(event)", autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.UserName)
+                        <label id="lblUserNameMsg"></label>
+
+                        <br>
+
+
+                        @Html.LabelFor(model => model.Email)
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @onBlur = "Validar(event)", autocomplete = "off", @id = "txtEmail" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                        <label id="lblEmailMsg"></label>
+
+
+                        <br>
+
+                        @Html.Label("Repetir Email")
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @onBlur = "ValidarEquals(event,'lblEmailMsg2')", autocomplete = "off", @id = "txtEmail2" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                        <label id="lblEmailMsg2"></label>
+
+
+                        <br>
+
+
+                        @Html.LabelFor(model => model.Pasword)
+                        @Html.TextBoxFor(model => model.Pasword, new { @class = "form-control", @onBlur = "Validar(event)", autocomplete = "off", @id = "txtPass" })
+                        <label id="lblPassMsg"></label>
+
+                        <br>
+
+
+                        @Html.Label("Repetir password")
+                        @Html.TextBoxFor(model => model.Pasword, new { @class = "form-control", @onBlur = "ValidarEquals(event,'lblPassMsg2')", autocomplete = "off", @id = "txtPass2" })
+                        <label id="lblPassMsg2"></label>
+
+
+
+                        <br>
+
+
+                        @Html.LabelFor(model => model.Rol.IdRol)
+                        @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Roles, "IdRol", "RolName"), "Selecciona una opcion", new { @class = "form-control" })
+
+
+                        <br><br>
+
+
+                        @Html.LabelFor(model => model.Imagen)
+                        <input type="file" id="fuImagen" name="fuImagen" onchange="PreviewImagen(event)" />
+
+                        <br><br>
+
+                        @if (Model.Imagen == null)
+                        {
+                            <img src="~/Images/DefaultImag.png" id="imgUsuario" style="width: 150px; height:150px;" />
+                        }
+                        else
+                        {
+                            <img src="data:image/png;base64,@Convert.ToBase64String(Model.Imagen)" id="imgUsuario" style="width: 150px; height:150px;" />
+                        }
+
+
+                        @Html.HiddenFor(model => model.Imagen)
+
+
+                    </fieldset>
+
+                </div>
+
+
+                <div class="col">
+
+                    <fieldset>
+                        <legend>Direccion</legend>
+
+                        @Html.Label("País")
+
+
+                        @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.Estado.Pais.IdPais, new SelectList(Model.Direccion.Colonia.Municipio.Estado.Pais.Paises, "IdPais", "Nombre"), "Selecciona un pais", new { @class = "form-control", @id = "ddlPais" })
+
+                        <br>
+
+                        @Html.Label("Estado")
+
+                        @if (Model.Direccion.Colonia.Municipio.Estado.Estados != null)
+                        {
+
+                            @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.Estado.IdEstado, new SelectList(Model.Direccion.Colonia.Municipio.Estado.Estados, "IdEstado", "Nombre"), "Selecciona un estado", new { @class = "form-control", @id = "ddlEstado" })
+
+                        }
+                        else
+                        {
+
+                            @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.Estado.IdEstado, new SelectList(string.Empty, "IdEstado", "Nombre"), "Selecciona un estado", htmlAttributes: new { @class = "form-control", @id = "ddlEstado" })
+
+                        }
+
+                        <br>
+
+                        @Html.Label("Municipio")
+
+                        @if (Model.Direccion.Colonia.Municipio.Municipios != null)
+                        {
+
+                            @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.IdMunicipio, new SelectList(Model.Direccion.Colonia.Municipio.Municipios, "IdMunicipio", "Nombre"), "Selecciona un municipio", new { @class = "form-control", @id = "ddlMunicipio" })
+
+                        }
+                        else
+                        {
+
+                            @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.IdMunicipio, new SelectList(string.Empty, "IdMunicipio", "Nombre"), "Selecciona un municipio", htmlAttributes: new { @class = "form-control", @id = "ddlMunicipio" })
+
+                        }
+
+                        <br>
+
+
+                        @Html.Label("Colonia")
+
+                        @if (Model.Direccion.Colonia.Colonias != null)
+                        {
+
+                            @Html.DropDownListFor(model => model.Direccion.Colonia.IdColonia, new SelectList(Model.Direccion.Colonia.Colonias, "IdColonia", "Nombre"), "Selecciona una colonia", new { @class = "form-control", @id = "ddlColonia" })
+
+                        }
+                        else
+                        {
+
+                            @Html.DropDownListFor(model => model.Direccion.Colonia.IdColonia, new SelectList(string.Empty, "IdColonia", "Nombre"), "Selecciona una colonia", htmlAttributes: new { @class = "form-control", @id = "ddlColonia" })
+
+                        }
+
+
+                        <br>
+
+
+                        @Html.LabelFor(model => model.Direccion.Calle)
+                        @Html.TextBoxFor(model => model.Direccion.Calle, new { @class = "form-control" })
+
+
+                        <br>
+
+
+                        @Html.LabelFor(model => model.Direccion.NumeroExterior)
+                        @Html.TextBoxFor(model => model.Direccion.NumeroExterior, new { @class = "form-control" })
+
+
+                        <br>
+
+
+                        @Html.LabelFor(model => model.Direccion.NumeroInterior)
+                        @Html.TextBoxFor(model => model.Direccion.NumeroInterior, new { @class = "form-control" })
+
+                    </fieldset>
+
+                </div>
+
+            </div>
+        </div>
+
+        <input type="submit" class="btn btn-success" value="@ViewBag.Accion" />
+        @Html.ActionLink("Cancelar", "Getall", "Usuario", new { @class = "btn btn-danger" })
+
+
+    }
+</div>
+
+
+
+
+@*<script src="~/Scripts/jquery-3.4.1.js"></script>*@
+
+@*<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1910:2023',
+                maxDate: new Date()
+            });
+        });
+    </script>
+
+}
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () { //listener
+        //selector en jQuery
+
+        //eventos onchange
+        $("#ddlPais").change(function () {
+
+            $("#ddlEstado").empty();
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetByIdEstado")',
+                dataType: 'json',
+                data: { idPais: $("#ddlPais").val() },
+                success: function (estados) {
+                    $("#ddlEstado").append('<option value="0">' + 'Seleccione un grupo' + '</option>');
+                    $.each(estados, function (i, estados) {
+                        $("#ddlEstado").append('<option value="'
+                            + estados.IdEstado + '">'
+                            + estados.Nombre + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+        });
+
+
+
+
+
+       $("#ddlEstado").change(function () {
+
+            $("#ddlMunicipio").empty();
+
+           $.ajax({
+               type: 'POST',
+               url: '@Url.Action("GetByIdMunicipio")',
+               dataType: 'json',
+               data: { idEstado: $("#ddlEstado").val() },
+               success: function (municipios) {
+                   $("#ddlMunicipio").append('<option value="0">' + 'Seleccione un municipio' + '</option>');
+                   $.each(municipios, function (i, municipios) {
+                       $("#ddlMunicipio").append('<option value="'
+                           + municipios.IdMunicipio + '">'
+                           + municipios.Nombre + '</option>');
+                   });
+               },
+               error: function (ex) {
+                   alert('Failed.' + ex);
+               }
+           });
+        });
+
+
+
+
+
+
+       $("#ddlMunicipio").change(function () {
+
+            $("#ddlColonia").empty();
+
+           $.ajax({
+               type: 'POST',
+               url: '@Url.Action("GetByIdColonia")',
+               dataType: 'json',
+               data: { idMunicipio: $("#ddlMunicipio").val() },
+               success: function (colonias) {
+                   $("#ddlColonia").append('<option value="0">' + 'Seleccione una colonia' + '</option>');
+                   $.each(colonias, function (i, colonias) {
+                       $("#ddlColonia").append('<option value="'
+                           + colonias.IdColonia + '">'
+                           + colonias.Nombre + '</option>');
+                   });
+               },
+               error: function (ex) {
+                   alert('Failed.' + ex);
+               }
+           });
+        });
+
+
+   
+
+
+
+  });
+
+
+
+
+
+    const d = document;
+
+    @* ------------- VALIDACIONES ----------- * *@
+    function ValidarEquals(event, controlId) {
+        switch (event.target.name) {
+            case 'Email':
+
+                d.getElementById(controlId).innerHTML = "";
+
+                email = d.getElementById('txtEmail');
+                email2 = d.getElementById('txtEmail2');
+
+                if (email.value != email2.value) {
+                    email2.style.borderColor = "red";
+                    d.getElementById(controlId).innerHTML = "El email no coincide";
+                    d.getElementById(controlId).style.color = "red";
+                } else {
+                    email2.style.borderColor = "green";
+                    d.getElementById(controlId).innerHTML = "El email coincide";
+                    d.getElementById(controlId).style.color = "green";
+                }
+
+
+
+            break;
+
+
+            case 'Pasword':
+
+                d.getElementById(controlId).innerHTML = "";
+
+                pass = d.getElementById('txtPass');
+                pass2 = d.getElementById('txtPass2');
+
+                if (pass.value != pass2.value) {
+                    pass2.style.borderColor = "red";
+                    d.getElementById(controlId).innerHTML = "la contraseña no coincide";
+                    d.getElementById(controlId).style.color = "red";
+                } else {
+                    pass2.style.borderColor = "green";
+                    d.getElementById(controlId).innerHTML = "la contraseña coincide";
+                    d.getElementById(controlId).style.color = "green";
+                }
+
+
+
+             break;
+        }
+    }
+
+    function Validar(event) {
+
+        const regex = {
+            OnlyLettersAndNumbers: /^[A-Za-z0-9]$/,
+            OnlyLettersAndSpaces: /^[a-zA-Z\s]*$/,
+            OnlyLetters: /^[a-zA-Z]$/,
+            OnlyEmail:   /^(([^<>()[\]\\.,;:\s@@"]+(\.[^<>()[\]\\.,;:\s@@"]+)*)|.(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            OnlyPass:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@@!%&*?])[A-Za-z\d#$@@!%&*?]{8,30}$/
+        }
+
+        console.log((event.target.name))
+        switch (event.target.name) {
+            case 'UserName':
+
+                if (!regex.OnlyLettersAndNumbers.test(event.key)) {
+                    d.getElementById("lblUserNameMsg").style.color = "red";
+                    d.getElementById("lblUserNameMsg").innerHTML = "No se aceptan esos caracteres";
+                    event.target.style.borderColor = "red";
+                    event.preventDefault();
+                } else {
+                    d.getElementById("lblUserNameMsg").style.color = "green";
+                    d.getElementById("lblUserNameMsg").innerHTML = "correcto";
+                    event.target.style.borderColor = "green";
+                }
+
+        break;
+
+            case 'Nombre':
+
+                if (!regex.OnlyLettersAndSpaces.test(event.key)) {
+                    d.getElementById("lblNombreMsg").style.color = "red";
+                    d.getElementById("lblNombreMsg").innerHTML = "No se aceptan esos caracteres";
+                    event.target.style.borderColor = "red";
+                    event.preventDefault();
+                } else {
+                    d.getElementById("lblNombreMsg").style.color = "green";
+                    d.getElementById("lblNombreMsg").innerHTML = "correcto";
+                    event.target.style.borderColor = "green";
+                }
+
+                break;
+
+            case 'ApellidoPaterno':
+
+                if (!regex.OnlyLetters.test(event.key)) {
+                    d.getElementById("lblAPaternoMsg").style.color = "red";
+                    d.getElementById("lblAPaternoMsg").innerHTML = "No se aceptan esos caracteres";
+                    event.target.style.borderColor = "red";
+                    event.preventDefault();
+                } else {
+                    d.getElementById("lblAPaternoMsg").style.color = "green";
+                    d.getElementById("lblAPaternoMsg").innerHTML = "correcto";
+                    event.target.style.borderColor = "green";
+                }
+
+                break;
+
+            case 'ApellidoMaterno':
+
+
+                if (!regex.OnlyLetters.test(event.key)) {
+                    d.getElementById("lblAMaternoMsg").style.color = "red";
+                    d.getElementById("lblAMaternoMsg").innerHTML = "No se aceptan esos caracteres";
+                    event.target.style.borderColor = "red";
+                    event.preventDefault();
+                } else {
+                    d.getElementById("lblAMaternoMsg").style.color = "green";
+                    d.getElementById("lblAMaternoMsg").innerHTML = "correcto";
+                    event.target.style.borderColor = "green";
+                }
+
+                break;
+
+            case 'Email':
+
+                if (!regex.OnlyEmail.test(event.target.value)) {
+                    d.getElementById("lblEmailMsg").style.color = "red";
+                    d.getElementById("lblEmailMsg").innerHTML = "No se aceptan esos caracteres";
+                    event.target.style.borderColor = "red";
+                    event.preventDefault();
+                } else {
+                    d.getElementById("lblEmailMsg").style.color = "green";
+                    d.getElementById("lblEmailMsg").innerHTML = "correcto";
+                    event.target.style.borderColor = "green";
+                }
+
+
+
+                email = d.getElementById('txtEmail');
+                email2 = d.getElementById('txtEmail2');
+
+                if (email.value != email2.value) {
+                    email2.style.borderColor = "red";
+                    d.getElementById(controlId).innerHTML = "El email no coincide";
+                    d.getElementById(controlId).style.color = "red";
+                } else {
+                    email2.style.borderColor = "green";
+                    d.getElementById(controlId).innerHTML = "El email coincide";
+                    d.getElementById(controlId).style.color = "green";
+                }
+
+
+                break;
+
+
+            case 'Pasword':
+
+                if (!regex.OnlyPass.test(event.key)) {
+                    d.getElementById("lblPassMsg").style.color = "red";
+                    d.getElementById("lblPassMsg").innerHTML = "No se aceptan esos caracteres";
+                    event.target.style.borderColor = "red";
+                    event.preventDefault();
+                } else {
+                    d.getElementById("lblPassMsg").style.color = "green";
+                    d.getElementById("lblPassMsg").innerHTML = "correcto";
+                    event.target.style.borderColor = "green";
+                }
+
+
+
+                pass = d.getElementById('txtPass');
+                pass2 = d.getElementById('txtPass2');
+
+                if (pass.value != pass2.value) {
+                    pass2.style.borderColor = "red";
+                    d.getElementById(controlId).innerHTML = "La contraseña no coincide";
+                    d.getElementById(controlId).style.color = "red";
+                } else {
+                    pass2.style.borderColor = "green";
+                    d.getElementById(controlId).innerHTML = "La contraseña coincide";
+                    d.getElementById(controlId).style.color = "green";
+                }
+
+
+                break;
+        }
+
+
+
+
+    }
+
+
+
+
+
+
+</script>
+
+
+
+
+<script type="text/javascript">
+
+    function PreviewImagen(event) {
+        var ima = document.getElementById('imgUsuario');
+        ima.src = URL.createObjectURL(event.target.files[0]);
+        ima.onload = function () {
+            URL.revokeObjectURL(ima.src)
+        }
+
+    }
+
+</script>

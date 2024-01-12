@@ -1,0 +1,341 @@
+﻿@model ML.Empleado
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="text-center">
+    <h2>Empleados</h2>
+    <h5>Lista de Empleados registrados</h5>
+</div>
+<br />
+
+
+<div class="row text-center">
+    <div class="col-md-6">
+        <a><input type="submit" value="Mostrar tabla" class="btn btn-success col-md-12" id="tabla" /></a>
+    </div>
+    <div class="col-md-6">
+        <a><input type="submit" value="Mostrar cards" class="btn btn-primary col-md-12" id="cards" /></a>
+    </div>
+</div>
+
+<br />
+<br />
+
+
+
+
+<div class="containerTable" id="containerTable">
+
+
+    <div class="row">
+        <div class="col col-md-6">
+            @Html.ActionLink("Agregar", "Form", "Empleado", new { @class = "btn btn-success" })
+        </div>
+        <div class="col col-md-6">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="btnOpenSearchAdvanced">
+                Busqueda avanzada
+            </button>
+        </div>
+    </div>
+    <br />
+
+    @if (Model.Empleados != null)
+    {
+
+        <div class="row text-center">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Editar</th>
+                            <th class="visually-hidden">Numero Empleado</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>RFC</th>
+                            <th>Telefono</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>NSS</th>
+                            <th>Fecha de Ingreso</th>
+                            <th>Foto</th>
+                            <th class="visually-hidden">Id Empresa</th>
+                            <th>Empresa</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+
+                    @foreach (ML.Empleado empleado in Model.Empleados)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <a class="btn btn-warning" href="@Url.Action("Form", "Empleado", new {NumeroEmpleado = empleado.NumeroEmpleado})"><i class="fa-solid fa-pencil"></i></a>
+                            </td>
+                            <td class="visually-hidden">@empleado.NumeroEmpleado</td>
+                            <td>@empleado.Nombre @empleado.ApellidoPaterno @empleado.ApellidoMaterno </td>
+                            <td>@empleado.Email</td>
+                            <td>@empleado.RFC</td>
+                            <td>@empleado.Telefono</td>
+                            <td>@empleado.FechaNacimiento</td>
+                            <td>@empleado.NSS</td>
+                            <td>@empleado.FechaIngreso</td>
+
+                            <td>
+                                @if (empleado.Foto == null)
+                                {
+                                    <img src="~/Images/DefaultImag.png" id="imgUsuario" style="width: 100px; height:100px;" />
+                                }
+                                else
+                                {
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(empleado.Foto)" id="imgUsuario" style="width: 100px; height:100px;" />
+                                }
+                            </td>
+
+                            <td class="visually-hidden">@empleado.Empresa.IdEmpresa</td>
+
+                            <td>@empleado.Empresa.Nombre</td>
+
+                            <td>
+                                <a class="btn btn-danger delete" onclick="confirmacionDelete(event, @empleado.NumeroEmpleado)" href="@Url.Action("Delete", "Empleado", new {NumeroEmpleado = empleado.NumeroEmpleado})">Eliminar</a>
+                            </td>
+
+
+
+                        </tr>
+                    }
+
+
+
+                </table>
+            </div>
+        </div>
+
+
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            No se encontraron registros
+        </div>
+
+    }
+
+</div>
+
+
+
+<div class="containerCards" id="containerCards">
+
+
+    <div class="row">
+        <div class="col col-md-6">
+            @Html.ActionLink("Agregar", "Form", "Empleado", new { @class = "btn btn-success" })
+        </div>
+        <div class="col col-md-6">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="btnOpenSearchAdvanced">
+                Busqueda avanzada
+            </button>
+        </div>
+    </div>
+    <br />
+
+    @if (Model.Empleados != null)
+    {
+
+        <div class="row text-center">
+            <div class="col-md-12">
+
+                <div class="cards">
+
+                    @foreach (ML.Empleado empleado in Model.Empleados)
+                    {
+
+
+
+                        <div class="card">
+                            @if (empleado.Foto == null)
+                            {
+                                <img src="~/Images/DefaultImag.png" id="imgUsuario" style="width:120px; height:120px;" />
+                            }
+                            else
+                            {
+                                <img src="data:image/png;base64,@Convert.ToBase64String(empleado.Foto)" id="imgUsuario" style="width:120px; height:120px;" />
+                            }
+
+                            <div class="contentInfoCard">
+                                <h4><b>@empleado.Nombre @empleado.ApellidoPaterno @empleado.ApellidoMaterno </b></h4>
+                                <p class="visually-hidden">@empleado.NumeroEmpleado</p>
+                                <p>@empleado.Telefono</p>
+                                <p>@empleado.Email | @empleado.FechaNacimiento</p>
+                                <p class="visually-hidden">@empleado.Empresa.IdEmpresa</p>
+                                <p>@empleado.Empresa.Nombre</p>
+                                <p>
+                                    <a class="btn btn-warning" href="@Url.Action("Form", "Empleado", new { NumeroEmpleado = empleado.NumeroEmpleado })"><i class="fa-solid fa-pencil"></i></a>
+                                    |
+                                    <a class="btn btn-warning" href="@Url.Action("EmpleadoDependiente", "Dependiente", new { NumeroEmpleado = empleado.NumeroEmpleado })"><i class="fa-solid fa-pencil"></i></a>
+                                    |
+                                    <a class="btn btn-danger delete" onclick="confirmacionDelete(event, @empleado.NumeroEmpleado)" href="@Url.Action("Delete", "Empleado", new { NumeroEmpleado = empleado.NumeroEmpleado })">Eliminar</a>
+                                </p>
+                            </div>
+                        </div>
+
+
+                    }
+
+
+                </div>
+            </div>
+        </div>
+
+
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            No se encontraron registros
+        </div>
+
+    }
+
+</div>
+
+
+
+
+
+
+
+
+
+@* MODAL BUSQUEDA AVANZADA EMPLEADOS *@
+
+<div class="modal fade" id="SearchAdvanced" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @using (@Html.BeginForm("GetAll", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+                    <div class="col col-xl-12">
+                        @Html.LabelFor(model => model.Nombre)
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                    </div>
+                    <div class="col col-xl-12">
+                        @Html.LabelFor(model => model.ApellidoPaterno)
+                        @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @id = "txtApellidoPaterno" })
+                    </div>
+                    <div class="col col-xl-12">
+                        @Html.LabelFor(model => model.ApellidoMaterno)
+                        @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", @id = "txtApellidoMaterno" })
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.Empresa.IdEmpresa)
+                            @Html.DropDownListFor(model => model.Empresa.IdEmpresa, new SelectList(Model.Empresa.Empresas, "IdEmpresa", "Nombre"), "Selecciona una opcion", new { @class = "form-control", @id = "ddlEmpresa" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-success" value="@ViewBag.Accion" />
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+
+
+<script type="text/javascript">
+
+    $("#btnOpenSearchAdvanced").click(function () {
+
+        $("#SearchAdvanced").modal('show');
+
+        $("#txtNombre").val('');
+        $("#txtApellidoPaterno").val('');
+        $("#txtApellidoMaterno").val('');
+        $("#ddlEmpresa").val('');
+    });
+
+
+</script>
+
+
+
+<script type="text/javascript">
+
+    $('#containerTable').hide();
+    $('#containerCards').hide();
+
+    $('#tabla').click(function () {
+        if ($('#containerTable').is(":visible")) {
+            $('#containerTable').hide();
+            $('#tabla').val("Mostrar tabla");
+            ;
+        } else {
+            $('#cards').val("Mostrar cards");
+            $('#containerCards').hide();
+            $('#containerTable').show();
+            $('#tabla').val("Ocultar tabla");
+        }
+
+    });
+
+
+    $('#cards').click(function () {
+        if ($('#containerCards').is(":visible")) {
+            $('#containerCards').hide();
+            $('#cards').val("Mostrar cards");
+            ;
+        } else {
+            $('#tabla').val("Mostrar tabla");
+            $('#containerTable').hide();
+            $('#containerCards').show();
+            $('#cards').val("Ocultar cards");
+        }
+
+    });
+
+
+</script>
+
+<style>
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        width: 270px;
+        padding: 10px;
+    }
+
+    .card img{
+        margin: 0px auto;
+    }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+    .contentInfoCard {
+        padding: 2px 16px;
+    }
+
+    .cards {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px
+    }
+</style>

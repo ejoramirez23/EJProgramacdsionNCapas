@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b43522df0e154a0a8fb26ee11ebf4b9c" Name="Diagram1">
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.Colonia" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.Dependiente" Width="1.5" PointX="10.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.DependienteTipo" Width="1.5" PointX="8" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.Direccion" Width="1.5" PointX="5.25" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.Empleado" Width="1.5" PointX="8" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.Empresa" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.Estado" Width="1.5" PointX="1.5" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.Municipio" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.Pai" Width="1.5" PointX="1.5" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.Rol" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.Usuario" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.ViewEmpleadoGetAll" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EJRamirezProgramacionNCapasModel.ViewUsuarioGetAll" Width="1.5" PointX="3.75" PointY="10.75" IsExpanded="true" />
+        <AssociationConnector Association="EJRamirezProgramacionNCapasModel.FK_ColoniaDireccion" ManuallyRouted="false" />
+        <AssociationConnector Association="EJRamirezProgramacionNCapasModel.FK_MunicipioColonia" ManuallyRouted="false" />
+        <AssociationConnector Association="EJRamirezProgramacionNCapasModel.FK_EmpleadoDependiente" ManuallyRouted="false" />
+        <AssociationConnector Association="EJRamirezProgramacionNCapasModel.FK_IdDependienteTipoDependiente" ManuallyRouted="false" />
+        <AssociationConnector Association="EJRamirezProgramacionNCapasModel.FK_UsuarioDireccion" ManuallyRouted="false" />
+        <AssociationConnector Association="EJRamirezProgramacionNCapasModel.FK_EmpresaEmpleado" ManuallyRouted="false" />
+        <AssociationConnector Association="EJRamirezProgramacionNCapasModel.FK_EstadoMunicipio" ManuallyRouted="false" />
+        <AssociationConnector Association="EJRamirezProgramacionNCapasModel.FK_PaisEstado" ManuallyRouted="false" />
+        <AssociationConnector Association="EJRamirezProgramacionNCapasModel.FK_RolUsuario" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,70 @@
+﻿@using ReportViewerForMvc;
+@model ML.Empleado
+@{
+    ViewBag.Title = "ShowReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ShowReport</h2>
+
+
+@Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer);
+
+
+@*@if (Model.Empleados != null)
+{
+
+    <div class="row text-center">
+        <div class="col-md-12">
+            <table class="table">
+                <thead class="table-light">
+                    <tr>
+                        <th>Numero Empleado</th>
+                        <th>Nombre</th>
+                        <th>Apellido Paterno</th>
+                        <th>Apellido Materno</th>
+                        <th>Email</th>
+                        <th>Fecha de Nacimiento</th>
+                        <th>Id Empresa</th>
+                        <th>Fecha de Ingreso</th>
+                     
+                    </tr>
+                </thead>
+
+                @foreach (ML.Empleado empleado in Model.Empleados)
+                {
+                    <tr>
+                       
+                        <td>@empleado.NumeroEmpleado</td>
+                        <td>@empleado.Nombre @empleado.ApellidoPaterno @empleado.ApellidoMaterno </td>
+                        <td>@empleado.ApellidoPaterno</td>
+                        <td>@empleado.ApellidoMaterno</td>
+                        <td>@empleado.Email</td>
+                        <td>@empleado.FechaNacimiento</td>
+                        <td>@empleado.Empresa.IdEmpresa</td>
+                        <td>@empleado.FechaIngreso</td>
+
+                        <td>@empleado.Empresa.IdEmpresa</td>
+
+         
+                    </tr>
+                }
+
+
+
+            </table>
+        </div>
+    </div>
+
+
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        No se encontraron registros
+    </div>
+
+}*@
+
+
+

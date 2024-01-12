@@ -1,0 +1,133 @@
+﻿@model ML.Empleado
+@{
+    ViewBag.Title = "EmpleadoDependiente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h2>Dependientes</h2>
+    <h5>Lista de Dependientes</h5>
+</div>
+<br />
+
+<div class="row text-center">
+    <div class="col-md-6">
+        <h3>Empleado: @Model.Nombre  @Model.ApellidoPaterno @Model.ApellidoMaterno </h3>
+    </div>
+</div>
+
+
+
+
+<div class="containerTable" id="containerTable">
+
+
+    <div class="row">
+        <div class="col col-md-6">
+            @Html.ActionLink("Agregar", "Form", "Empleado", new { @class = "btn btn-success" })
+        </div>
+        <div class="col col-md-6">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="btnOpenSearchAdvanced">
+                Busqueda avanzada
+            </button>
+        </div>
+    </div>
+    <br />
+
+    @if (Model.Dependiente.Dependientes != null)
+    {
+
+        <div class="row text-center">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Editar</th>
+                            <th class="visually-hidden">IdDependiente</th>
+                            <th class="visually-hidden">Numero Empleado</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>RFC</th>
+                            <th>Telefono</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>NSS</th>
+                            <th>Fecha de Ingreso</th>
+                            <th>Foto</th>
+                            <th class="visually-hidden">Id Empresa</th>
+                            <th>Empresa</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+
+                    @foreach (ML.Dependiente empleado in Model.Dependiente.Dependientes)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                <a class="btn btn-warning" href="@Url.Action("Form", "Empleado", new {NumeroEmpleado = empleado.NumeroEmpleado})"><i class="fa-solid fa-pencil"></i></a>
+                            </td>
+                            <td class="visually-hidden">@empleado.NumeroEmpleado</td>
+                            <td>@empleado.Nombre @empleado.ApellidoPaterno @empleado.ApellidoMaterno </td>
+                            <td>@empleado.Email</td>
+                            <td>@empleado.RFC</td>
+                            <td>@empleado.Telefono</td>
+                            <td>@empleado.FechaNacimiento</td>
+                            <td>@empleado.NSS</td>
+                            <td>@empleado.FechaIngreso</td>
+
+                            <td>
+                                @if (empleado.Foto == null)
+                                {
+                                    <img src="~/Images/DefaultImag.png" id="imgUsuario" style="width: 100px; height:100px;" />
+                                }
+                                else
+                                {
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(empleado.Foto)" id="imgUsuario" style="width: 100px; height:100px;" />
+                                }
+                            </td>
+
+                            <td class="visually-hidden">@empleado.Empresa.IdEmpresa</td>
+
+                            <td>@empleado.Empresa.Nombre</td>
+
+                            <td>
+                                <a class="btn btn-danger delete" onclick="confirmacionDelete(event, @empleado.NumeroEmpleado)" href="@Url.Action("Delete", "Empleado", new {NumeroEmpleado = empleado.NumeroEmpleado})">Eliminar</a>
+                            </td>
+
+
+
+                        </tr>
+                    }
+
+
+
+                </table>
+            </div>
+        </div>
+
+
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            No se encontraron registros
+        </div>
+
+    }
+
+</div>
+
+
+
+
+
+
+
+<br />
+<br />
+
+
+
+
+
+
+
